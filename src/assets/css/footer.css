@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.footer {
+  width: 100%;
+  padding: 1.5rem 0;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 90%;
+  margin: auto;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.icon {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+  color: #ffd700; /* Gold effect on hover */
+}
+
+.contact-item a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.contact-item a:hover {
+  text-decoration: underline;
+  color: #ffd700;
+}
+
+.vertical-line {
+  width: 2px;
+  height: 70px;
+  background-color: rgba(255, 255, 255, 0.4);
+  margin: 0 20px;
+}
+
+.copyright {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.features h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features li {
+  font-size: 1 rem;
+  font-style: italic;
+  text-align: left;
+  font-weight: 400;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.features li::before {
+    content: "✔ "; /* Adds a checkmark before each item */
+    color: #ffd700; /* Gold color for checkmark */
+    font-weight: bold;
+  }
+  
+
+.features li:hover {
+  transform: scale(1.1);
+  color: #0eefff;
+}
+
+/* Theme-Specific Background Colors */
+.blue-palette {
+  background: linear-gradient(135deg, #0d1282, #3b5bfd);
+  color: white;
+}
+
+.rose-palette {
+  background: linear-gradient(135deg, #ff2171, #ff5e5e);
+  color: white;
+}
+
+.violet-palette {
+  background: linear-gradient(135deg, #360d95, #8e44ad);
+  color: white;
+}
+
+.black-palette {
+  background: linear-gradient(135deg, #333, #555);
+  color: white;
+}

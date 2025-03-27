@@ -3,27 +3,14 @@ import "../assets/css/navbar.css";
 
 export const Navbar = ({
   setOpen,
+  setSearch,
   state,
   dispatch,
   palettes,
   currentPalette,
   setCurrentPalette,
-  setSelectedLanguage, // Prop to update selected language
 }) => {
-  const [searchInput, setSearchInput] = useState("");
   const [onPalette, setOnPalette] = useState(false);
-  const [voices, setVoices] = useState([]);
-
-  useEffect(() => {
-    const fetchVoices = () => {
-      const synthVoices = window.speechSynthesis.getVoices();
-      setVoices(synthVoices);
-    };
-  
-    fetchVoices();
-    window.speechSynthesis.onvoiceschanged = fetchVoices;
-  }, []);
-  
 
   return (
     <div className={`navbar ${state?.palette ? state.palette.name : currentPalette?.name}`}>
@@ -36,8 +23,7 @@ export const Navbar = ({
             type="text"
             className="search-input"
             placeholder="Search Notes..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)} // Fix: Directly update search in App.jsx
           />
           <button className="search-btn">
             <i className="fa-solid fa-magnifying-glass"></i>
@@ -45,37 +31,30 @@ export const Navbar = ({
         </div>
 
         <div className="nav-options">
+          {/* Theme Palette Selector */}
           <div className="nav-icon">
-            {/* Theme Palette */}
             <div className={`palettes ${onPalette && "active"}`}>
               {palettes.map((palette) => (
                 <div
+                  key={palette.id}
                   onClick={() => {
                     setCurrentPalette(palette);
                     dispatch({ type: "SET_PALETTE", payload: palette });
                   }}
-                  key={palette.id}
                   style={{ backgroundColor: palette.color }}
-                  className={`palette-item ${currentPalette.id === palette.id && "active"}`}
+                  className={`palette-item ${currentPalette.id === palette.id ? "active" : ""}`}
                 ></div>
               ))}
             </div>
             <i onClick={() => setOnPalette((prev) => !prev)} className="fa-solid fa-circle-half-stroke"></i>
           </div>
 
+          {/* Add Note Button */}
           <div className="nav-icon" onClick={() => setOpen(true)}>
             <i className="fa-solid fa-plus"></i>
           </div>
         </div>
       </div>
-      {/* Language Selector */}
-      <select className="language-selector" onChange={(e) => setSelectedLanguage(e.target.value)}>
-          {voices.map((voice, index) => (
-            <option key={index} value={voice.name}>
-              {voice.name} ({voice.lang})
-            </option>
-          ))}
-        </select>
     </div>
   );
 };

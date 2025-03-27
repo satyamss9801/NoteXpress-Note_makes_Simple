@@ -48,7 +48,7 @@
 
 .icon:hover {
   transform: scale(1.2);
-  color: #ffd700; /* Gold effect on hover */
+  color: #ffd700;
 }
 
 .contact-item a {
@@ -100,8 +100,8 @@
   transition: transform 0.3s ease, color 0.3s ease;
 }
 .features li::before {
-    content: "✔ "; /* Adds a checkmark before each item */
-    color: #ffd700; /* Gold color for checkmark */
+    content: "✔ ";
+    color: #ffd700; 
     font-weight: bold;
   }
   
@@ -111,7 +111,6 @@
   color: #0eefff;
 }
 
-/* Theme-Specific Background Colors */
 .blue-palette {
   background: linear-gradient(135deg, #0d1282, #3b5bfd);
   color: white;

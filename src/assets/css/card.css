@@ -99,8 +99,8 @@
 }
 
 .note-card:hover {
-  transform: scale(1.1); /* Slightly enlarge the card */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+  transform: scale(1.1); 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); 
   z-index: 10;
 }
 

@@ -22,15 +22,12 @@ export default function App() {
   const [currentNote, setCurrentNote] = useState(null);
   const [search, setSearch] = useState("");
   const [currentPalette, setCurrentPalette] = useState(
-    state?.palette
-      ? palettes.find((p) => p.id === state.palette.id)
-      : palettes[0]
+    state?.palette ? palettes.find((p) => p.id === state.palette.id) : palettes[0]
   );
-  let filteredNotes = [];
 
   useEffect(() => {
-    const tempNotes = JSON.parse(localStorage.getItem("notes"));
-    tempNotes && setNotes(tempNotes);
+    const tempNotes = JSON.parse(localStorage.getItem("notes")) || [];
+    setNotes(tempNotes);
   }, []);
 
   const saveNotes = (items) => {
@@ -45,6 +42,12 @@ export default function App() {
     }
   };
 
+  const handleDeleteNote = (noteId) => {
+    const tempNotes = notes.filter((n) => n.id !== noteId);
+    setNotes(tempNotes);
+    saveNotes(tempNotes);
+  };
+
   const handleOnUpdate = (note) => {
     setCurrentNote(note);
     setOnCreateNote(true);
@@ -52,17 +55,11 @@ export default function App() {
 
   const handleUpdateNote = (note) => {
     if (note) {
-      const tempNotes = [...notes.map((n) => (n.id === note.id ? note : n))];
+      const tempNotes = notes.map((n) => (n.id === note.id ? note : n));
       setNotes(tempNotes);
       setCurrentNote(null);
       saveNotes(tempNotes);
     }
-  };
-
-  const handleDeleteNote = (noteId) => {
-    const tempNotes = [...notes.filter((n) => n.id !== noteId)];
-    setNotes(tempNotes);
-    saveNotes(tempNotes);
   };
 
   const handleOnPreview = (note) => {
@@ -70,38 +67,30 @@ export default function App() {
     setOnViewNote(true);
   };
 
-  if (search) {
-    filteredNotes = [
-      ...notes.filter(
-        (n) =>
-          n.title.toLowerCase().includes(search.toLocaleLowerCase()) ||
-          n.desc.toLowerCase().includes(search.toLocaleLowerCase())
-      ),
-    ];
-  } else {
-    filteredNotes = [...notes];
-  }
+  // Fix: Search now works correctly
+  const filteredNotes = notes.filter((n) =>
+    search
+      ? n.title.toLowerCase().includes(search.toLowerCase()) ||
+        n.desc.toLowerCase().includes(search.toLowerCase())
+      : true
+  );
 
   return (
-    <div
-      className={`app ${
-        state?.palette ? state?.palette?.name : currentPalette?.name
-      }`}
-    >
-     <Navbar
-    setOpen={setOnCreateNote}
-    state={state}
-    dispatch={dispatch}
-    setCurrentPalette={setCurrentPalette}
-    palettes={palettes}
-    currentPalette={currentPalette}
-    setSearch={setSearch}
-     />
+    <div className={`app ${state?.palette ? state?.palette?.name : currentPalette?.name}`}>
+      <Navbar
+        setOpen={setOnCreateNote}
+        state={state}
+        dispatch={dispatch}
+        setCurrentPalette={setCurrentPalette}
+        palettes={palettes}
+        currentPalette={currentPalette}
+        setSearch={setSearch} // Fix: Passing setSearch correctly
+      />
       <div className="wrapper container">
         <div className="notes-wrapper">
           {filteredNotes.map((note) => (
             <NoteCard
-              key={note?.id}
+              key={note.id}
               note={note}
               onDelete={handleDeleteNote}
               onUpdate={handleOnUpdate}
@@ -109,6 +98,7 @@ export default function App() {
             />
           ))}
         </div>
+
         {onCreateNote && (
           <UpsertNote
             note={currentNote}
@@ -117,9 +107,7 @@ export default function App() {
             setOpen={setOnCreateNote}
           />
         )}
-        {onViewNote && (
-          <NoteDetails note={currentNote} setView={setOnViewNote} />
-        )}
+        {onViewNote && <NoteDetails note={currentNote} setView={setOnViewNote} />}
       </div>
       <Footer />
     </div>

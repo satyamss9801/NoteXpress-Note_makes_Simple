@@ -1,10 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../assets/css/upsert.css";
 import { v4 as getID } from "uuid";
 
 export const UpsertNote = ({ setOpen, note, createNote, updateNote }) => {
   const [title, setTitle] = useState(note ? note?.title : "");
   const [desc, setDesc] = useState(note ? note?.desc : "");
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    if (!("webkitSpeechRecognition" in window)) {
+      console.error("Speech Recognition is not supported in this browser.");
+      return;
+    }
+
+    recognitionRef.current = new window.webkitSpeechRecognition();
+    recognitionRef.current.continuous = true;
+    recognitionRef.current.interimResults = true;
+    recognitionRef.current.lang = "en-US";
+
+    recognitionRef.current.onresult = (event) => {
+      let interimTranscript = "";
+      let finalTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + " ";
+        } else {
+          interimTranscript += event.results[i][0].transcript;
+        }
+      }
+      setDesc((prevDesc) => prevDesc + finalTranscript);
+    };
+
+    recognitionRef.current.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+    };
+
+    recognitionRef.current.onend = () => {
+      setIsListening(false);
+    };
+
+    return () => {
+      recognitionRef.current.stop();
+    };
+  }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      recognitionRef.current.start();
+    }
+    setIsListening(!isListening);
+  };
 
   const clearInputs = () => {
     setTitle("");
@@ -18,7 +67,6 @@ export const UpsertNote = ({ setOpen, note, createNote, updateNote }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     if (note) {
       updateNote({
         ...note,
@@ -26,7 +74,6 @@ export const UpsertNote = ({ setOpen, note, createNote, updateNote }) => {
         desc,
       });
     } else {
-  
       createNote({
         id: getID(),
         title,
@@ -38,7 +85,6 @@ export const UpsertNote = ({ setOpen, note, createNote, updateNote }) => {
     setOpen(false);
   };
 
-  console.log(title, desc);
   return (
     <div className="upsert-note">
       <div className="upsert-wrapper">
@@ -65,10 +111,17 @@ export const UpsertNote = ({ setOpen, note, createNote, updateNote }) => {
             onChange={(e) => setDesc(e.target.value)}
           ></textarea>
           <div className="upsert-actions">
-            <button className="clear-btn" onClick={handleClear}>
+            <button className="clear-btn rounded-btn" onClick={handleClear}>
               Clear
             </button>
-            <button type="submit" className="save-btn">
+            <button
+              type="button"
+              className={`voice-btn rounded-btn ${isListening ? "active" : ""}`}
+              onClick={toggleListening}
+            >
+              {isListening ? "Stop Listening" : "Start Listening"}
+            </button>
+            <button type="submit" className="save-btn rounded-btn">
               Save
             </button>
           </div>

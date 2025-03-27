@@ -13,7 +13,12 @@ const Footer = () => {
         <div className="footer-section contact">
           <div className="contact-item">
             <FaEnvelope className="icon" />
-            <span>satyamss980101@gmail.com</span>
+            <span>
+              <a href="mailto:satyamss980101@gmail.com" style={{ textDecoration: "none", color: "inherit" }}>
+                satyamss980101@gmail.com
+              </a>
+            </span>
+
           </div>
           <div className="contact-item">
             <FaPhone className="icon" />

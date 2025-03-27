@@ -41,12 +41,21 @@
   margin-top: 2rem;
 }
 
-.input-form,
+.input-form{
+  padding: 0.5rem 0.8rem;
+  outline: none;
+  border: 1px solid #100707;
+  border-radius: 0.3rem;
+  font-size: larger;
+  font-family: italic;
+}
+
 .textarea-form {
   padding: 0.5rem 0.8rem;
   outline: none;
   border: 1px solid #ddd;
   border-radius: 0.3rem;
+  font-size: medium;
 }
 
 .textarea-form {
@@ -57,33 +66,48 @@
 .upsert-actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.upsert-actions button {
-  padding: 0.5rem 2rem;
-  font-weight: bold;
-  border: none;
-  margin-left: 1rem;
-  border-radius: 0.3rem;
-  color: white;
-  cursor: pointer;
-}
-
-.upsert-actions button.clear-btn {
+.upsert-actions .clear-btn {
   background-color: gray;
+  color: white;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
 }
 
-.upsert-actions button.clear-btn:hover {
+.upsert-actions .clear-btn:hover {
   background-color: rgb(158, 157, 157);
 }
 
-.upsert-actions button.save-btn {
+.upsert-actions .save-btn {
   background-color: rgb(8, 64, 131);
+  color: white;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
 }
 
-.upsert-actions button.save-btn:hover {
+.upsert-actions .save-btn:hover {
   background-color: rgb(7, 73, 154);
+}
+
+.voice-btn {
+  background-color: #ff9800;
+  color: white;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: background-color 0.3s;
+}
+
+.voice-btn.active {
+  background-color: #f44336;
 }
 
 @media (max-width: 991px) {
